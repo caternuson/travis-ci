@@ -19,9 +19,10 @@ git clone -b gh-pages https://github.com/${TRAVIS_REPO_SLUG}.git
 cd $TRAVIS_BUILD_DIR
 
 # run Doxygen
-curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/Doxyfile.default > ${DOXYFILE}
-sed -i "s;^HTML_OUTPUT .*;HTML_OUTPUT = ${DOXY_DIR}/${TRAVIS_REPO_NAME}/html;"  ${DOXYFILE}
-doxygen ${DOXYFILE}
+curl -sSL https://raw.githubusercontent.com/caternuson/travis-ci/master/Doxyfile.default > ${DOXY_FILE}
+sed -i "s/^PROJECT_NAME.*/PROJECT_NAME = \"${TRAVIS_REPO_NAME}\"/"  ${DOXY_FILE}
+sed -i "s;^HTML_OUTPUT .*;HTML_OUTPUT = ${DOXY_DIR}/${TRAVIS_REPO_NAME}/html;"  ${DOXY_FILE}
+doxygen ${DOXY_FILE}
 
 # push to gh-pages branch
 cd ${DOXY_DIR}/${TRAVIS_REPO_NAME}
