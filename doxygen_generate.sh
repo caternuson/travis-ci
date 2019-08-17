@@ -1,5 +1,14 @@
-echo "Doxygen Generation."
-date
+#!/bin/bash
+
+# if this is a pull request, just exit
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    echo "This is a Pull Request, we're done!"
+    exit 0
+fi
+
+echo "-------------"
+echo "Doxygen START"
+echo "-------------"
 
 # variables
 TRAVIS_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
@@ -24,8 +33,12 @@ sed -i "s/^PROJECT_NAME.*/PROJECT_NAME = \"${TRAVIS_REPO_NAME}\"/"  ${DOXY_FILE}
 sed -i "s;^HTML_OUTPUT .*;HTML_OUTPUT = ${DOXY_DIR}/${TRAVIS_REPO_NAME}/html;"  ${DOXY_FILE}
 doxygen ${DOXY_FILE}
 
-# push to gh-pages branch
+# push to gh-pages branch, if built
 cd ${DOXY_DIR}/${TRAVIS_REPO_NAME}
 git add .
 git commit -m "Travis built docs "
 git push --force "https://${GH_REPO_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" > /dev/null 2>&1
+
+echo "-------------"
+echo "Doxygen END"
+echo "-------------"
