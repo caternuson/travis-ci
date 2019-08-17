@@ -11,7 +11,7 @@ echo "Doxygen START"
 echo "-------------"
 
 # get latest version instead of older deb package
-wget http://doxygen.nl/files/doxygen-1.8.16.linux.bin.tar.gz
+wget -q http://doxygen.nl/files/doxygen-1.8.16.linux.bin.tar.gz
 tar -xf doxygen-1.8.16.linux.bin.tar.gz
 mv ./doxygen-1.8.16/bin/doxygen .
 
