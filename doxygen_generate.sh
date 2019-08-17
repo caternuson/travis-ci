@@ -2,13 +2,18 @@
 
 # if this is a pull request, just exit
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-    echo "This is a Pull Request, we're done!"
+    echo "This is a Pull Request, skipping document generation."
     exit 0
 fi
 
 echo "-------------"
 echo "Doxygen START"
 echo "-------------"
+
+# get latest version instead of older deb package
+wget http://doxygen.nl/files/doxygen-1.8.16.linux.bin.tar.gz
+tar -xf doxygen-1.8.16.linux.bin.tar.gz
+mv ./doxygen-1.8.16/bin/doxygen .
 
 # variables
 TRAVIS_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
@@ -31,7 +36,7 @@ cd $TRAVIS_BUILD_DIR
 curl -sSL https://raw.githubusercontent.com/caternuson/travis-ci/master/Doxyfile.default > ${DOXY_FILE}
 sed -i "s/^PROJECT_NAME.*/PROJECT_NAME = \"${TRAVIS_REPO_NAME}\"/"  ${DOXY_FILE}
 sed -i "s;^HTML_OUTPUT .*;HTML_OUTPUT = ${DOXY_DIR}/${TRAVIS_REPO_NAME}/html;"  ${DOXY_FILE}
-doxygen ${DOXY_FILE}
+${TRAVIS_BUILD_DIR}/doxygen ${DOXY_FILE}
 
 # push to gh-pages branch, if built
 cd ${DOXY_DIR}/${TRAVIS_REPO_NAME}
