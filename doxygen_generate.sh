@@ -11,10 +11,12 @@ echo "Doxygen START"
 echo "-------------"
 
 # get latest version instead of older deb package
-echo "Installing Doxygen..."
+echo -n "Installing Doxygen..."
 wget -q http://doxygen.nl/files/doxygen-1.8.16.linux.bin.tar.gz
 tar -xf doxygen-1.8.16.linux.bin.tar.gz
 mv ./doxygen-1.8.16/bin/doxygen .
+echo "DONE."
+echo -n "Doxygen version = "
 ${TRAVIS_BUILD_DIR}/doxygen -v
 
 # variables
